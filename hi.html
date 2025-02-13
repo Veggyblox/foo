@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background: #35424a;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .cart {
+            margin: 20px 0;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 10px;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        main {
+            margin: 20px 0;
+        }
+
+        .product-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .product {
+            margin: 10px;
+            padding: 10px;
+            background: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: box-shadow 0.3s;
+            width: calc(25% - 20px);
+            box-sizing: border-box;
+        }
+
+        .product img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+            border-radius: 20px;
+        }
+
+        .product:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .buy-button {
+            background-color: #ffcc00;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s, transform 0.3s;
+            margin-top: 10px;
+        }
+
+        .buy-button:hover {
+            background-color: #e6b800;
+            transform: scale(1.05);
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: #35424a;
+            color: #ffffff;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Shopping Website</h1>
+        <div class="cart">
+            <span>Cart: <span id="cart-count">0</span> items</span>
+            <br>
+            <span>Total Spent: $<span id="total-spent">0.00</span></span>
+            <div class="dropdown">
+                <button class="buy-button">View Purchases</button>
+                <div class="dropdown-content" id="purchases-dropdown">
+                    <span>No items purchased yet.</span>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="product-list" id="product-list"></div>
+    </main>
+    <footer>
+        <p>&copy; 2025 Sigma Shopping Website</p>
+    </footer>
+    <script>
+        const products = [
+            {
+                id: 1,
+                name: 'Real Madrid Track Suit',
+                price: 79.99,
+                image: 'https://footballmonk.in/wp-content/uploads/2024/01/Real-Madrid-White-TrackSuit-23-24-1.jpg'
+            },
+            {
+                id: 2,
+                name: 'Football Player Image',
+                price: 59.99,
+                image: 'https://blog.lovellsoccer.co.uk/wp-content/uploads/2024/09/image-68-edited.png'
+            },
+            {
+                id: 3,
+                name: 'Mbappé Real Madrid 24/25 Season First Kit',
+                price: 69.99,
+                image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdODGducEcf_DFBOcOPszxT6VnC4CtP6kfNA&s'
+            },
+            {
+                id: 4,
+                name: 'Stylish Black Boots',
+                price: 89.99,
+                image: 'https://m.media-amazon.com/images/I/61GQuDAZbgL._AC_SL1500_.jpg'
+            },
+            {
+                id: 5,
+                name: 'Classic Brown Boots',
+                price: 99.99,
+                image: 'https://m.media-amazon.com/images/I/71jhSYdcz3L._AC_US218_.jpg'
+            },
+            {
+                id: 6,
+                name: 'Mbappé Real Madrid 24/25 Season Second Kit',
+                price: 69.99,
+                image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxnNVXVf2LMVLHhiYmL2jSBYjkwjB0JXsagg&s'
+            },
+            {
+                id: 7,
+                name: 'Mbappé Real Madrid 24/25 Season Third Kit',
+                price: 69.99,
+                image: 'https://underthelightsfutbol.com/cdn/shop/files/realmbappethird2.jpg?v=1724127768&width=533'
+            }
+        ];
+
+        let cartCount = 0;
+        let totalSpent = 0;
+        let purchasedItems = {};
+
+        function displayProducts() {
+            const productList = document.getElementById('product-list');
+            products.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'product';
+                productDiv.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <h2>${product.name}</h2>
+                    <p>Price: $${product.price.toFixed(2)}</p>
+                    <button class="buy-button" onclick="addToCart(${product.id}, 1)">Buy</button>
+                `;
+                productList.appendChild(productDiv);
+            });
+        }
+
+        function addToCart(productId, quantity) {
+            const selectedProduct = products.find(product => product.id === productId);
+            cartCount += quantity;
+            totalSpent += selectedProduct.price * quantity;
+
+            if (purchasedItems[selectedProduct.id]) {
+                purchasedItems[selectedProduct.id].quantity += quantity;
+            } else {
+                purchasedItems[selectedProduct.id] = { name: selectedProduct.name, price: selectedProduct.price, quantity: quantity };
+            }
+
+            document.getElementById('cart-count').innerText = cartCount;
+            document.getElementById('total-spent').innerText = totalSpent.toFixed(2);
+            updatePurchasesDropdown();
+        }
+
+        function updatePurchasesDropdown() {
+            const dropdown = document.getElementById('purchases-dropdown');
+            dropdown.innerHTML = '';
+            if (cartCount === 0) {
+                dropdown.innerHTML = '<span>No items purchased yet.</span>';
+            } else {
+                for (const key in purchasedItems) {
+                    const item = purchasedItems[key];
+                    const itemElement = document.createElement('a');
+                    itemElement.innerText = `${item.quantity} x ${item.name} - $${(item.price * item.quantity).toFixed(2)}`;
+                    dropdown.appendChild(itemElement);
+                }
+            }
+        }
+
+        window.onload = () => {
+            displayProducts();
+        };
+    </script>
+</body>
+
+</html>

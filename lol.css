@@ -1,0 +1,52 @@
+< !DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Shopping Website</title><link rel="stylesheet" href="lol.css"><style>body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+header {
+    background: #35424a;
+    color: #ffffff;
+    padding: 20px;
+    text-align: center;
+}
+
+.cart {
+    margin: 20px 0;
+}
+
+main {
+    margin: 20px 0;
+}
+
+.product {
+    margin: 20px 0;
+    padding: 10px;
+    background: #ffffff;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#product-select,
+#quantity-input,
+#add-to-cart-button {
+    margin: 10px 0;
+    padding: 10px;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background: #35424a;
+    color: #ffffff;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+</style></head><body><header><h1>Suedge Football  Website</h1><div class="cart"><span>Cart: <span id="cart-count">0</span>items</span><br><span>Total Spent: $<span id="total-spent">0.00</span></span></div></header><main><div><label for="product-select">Choose a product:</label><select id="product-select"></select><br><label for="quantity-input">Quantity:</label><input type="number" id="quantity-input" value="1" min="1" /><br><button id="add-to-cart-button">Add to Cart</button></div><div id="product-list"></div></main><footer><p>&copy;
+2025 Sigma Shopping Website</p></footer><script src="onana.js"></script></body></html>
